@@ -47,22 +47,50 @@ class TypewiseTest(unittest.TestCase):
 
     def test_check_and_alert(self):
         alert = TypewiseAlert()
-        self.assertFalse(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'PASSIVE_COOLING'}, 70))
-        self.assertFalse(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'MED_ACTIVE_COOLING'}, 70))
+
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'PASSIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'PASSIVE_COOLING'}, 36))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'PASSIVE_COOLING'}, 35))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'PASSIVE_COOLING'}, 0))
+
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'PASSIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'PASSIVE_COOLING'}, 36))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'PASSIVE_COOLING'}, 35))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'PASSIVE_COOLING'}, 0))
+
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'HI_ACTIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'HI_ACTIVE_COOLING'}, 46))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'HI_ACTIVE_COOLING'}, 45))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'HI_ACTIVE_COOLING'}, 0))
+
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'HI_ACTIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'HI_ACTIVE_COOLING'}, 46))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'HI_ACTIVE_COOLING'}, 45))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'HI_ACTIVE_COOLING'}, 0))
+
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'MED_ACTIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'MED_ACTIVE_COOLING'}, 41))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'MED_ACTIVE_COOLING'}, 40))
+        self.assertTrue(alert.check_and_alert('TO_EMAIL', {'cooling_type': 'MED_ACTIVE_COOLING'}, 0))
+
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'MED_ACTIVE_COOLING'}, -1))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'MED_ACTIVE_COOLING'}, 41))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'MED_ACTIVE_COOLING'}, 40))
+        self.assertTrue(alert.check_and_alert('TO_CONTROLLER', {'cooling_type': 'MED_ACTIVE_COOLING'}, 0))
 
     def test_mail_server_status_stub(self):
         self.assertEqual(ta.mail_server_status_stub(50), 200)
         self.assertEqual(ta.mail_server_status_stub(51), 500)
 
         self.assertEqual(ta.mail_server_status_stub(0), 200)
-        self.assertEqual(ta.mail_server_status_stub(-1), 500)
+        self.assertEqual(ta.mail_server_status_stub(-6), 500)
 
     def test_controller_status_stub(self):
         self.assertEqual(ta.controller_status_stub(50), 'OK')
         self.assertEqual(ta.controller_status_stub(51), 'Not OK')
 
         self.assertEqual(ta.controller_status_stub(0), 'OK')
-        self.assertEqual(ta.controller_status_stub(-1), 'Not OK')
+        self.assertEqual(ta.controller_status_stub(-6), 'Not OK')
 
     def test_send_to_controller(self):
         self.assertTrue(normal, 40)
@@ -73,12 +101,15 @@ class TypewiseTest(unittest.TestCase):
         alert = TypewiseAlert()
         self.assertTrue(alert.send_alert_to_email(ta.mail_server_status_stub, 50, too_high))
         self.assertFalse(alert.send_alert_to_email(ta.mail_server_status_stub, 51, too_high))
+        self.assertTrue(alert.send_alert_to_email(ta.mail_server_status_stub, 0, too_low))
+        self.assertFalse(alert.send_alert_to_email(ta.mail_server_status_stub, -6, too_low))
 
     def test_send_alert_to_controller(self):
         alert = TypewiseAlert()
         self.assertTrue(alert.send_alert_to_controller(ta.controller_status_stub, 50, too_high))
         self.assertFalse(alert.send_alert_to_controller(ta.controller_status_stub, 51, too_high))
-
+        self.assertTrue(alert.send_alert_to_controller(ta.controller_status_stub, 0, too_low))
+        self.assertFalse(alert.send_alert_to_controller(ta.controller_status_stub, -6, too_low))
 
 if __name__ == '__main__':
     unittest.main()

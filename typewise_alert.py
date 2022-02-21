@@ -99,14 +99,14 @@ class TypewiseAlert:
         return False
 
 
-def mail_server_status_stub(temperature_in_c, higher_threshold=50, lower_threshold=0):
+def mail_server_status_stub(temperature_in_c, higher_threshold=50, lower_threshold=-5):
     if higher_threshold >= temperature_in_c >= lower_threshold:
         return 200
     else:
         return 500
 
 
-def controller_status_stub(temperature_in_c, higher_threshold=50, lower_threshold=0):
+def controller_status_stub(temperature_in_c, higher_threshold=50, lower_threshold=-5):
     if higher_threshold >= temperature_in_c >= lower_threshold:
         return 'OK'
     else:
