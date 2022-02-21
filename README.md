@@ -13,3 +13,13 @@ Hint: Test the abstractions, instead of just end-to-end tests.
 Uncovered lines indicate an opportunity to write tests.
 
 > Caution: High coverage doesn't indicate no bugs!
+
+Solution :
+
+Implemented Strategy Design Pattern to solve the problem. 
+
+Negative Test Cases are covered. 
+
+All functions are testable and thus, ensured code coverage. 
+
+Introduced Stubs to deal with external dependencies
