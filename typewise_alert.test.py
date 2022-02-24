@@ -111,5 +111,6 @@ class TypewiseTest(unittest.TestCase):
         self.assertTrue(alert.send_alert_to_controller(ta.controller_status_stub, 0, too_low))
         self.assertFalse(alert.send_alert_to_controller(ta.controller_status_stub, -6, too_low))
 
+
 if __name__ == '__main__':
     unittest.main()
