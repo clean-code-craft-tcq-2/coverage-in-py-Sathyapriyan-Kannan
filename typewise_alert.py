@@ -6,12 +6,12 @@ class TypewiseAlert:
     def __init__(self):
 
         self.__cooling_types = {'PASSIVE_COOLING': passive, 'HI_ACTIVE_COOLING': hi_active,
-                              'MED_ACTIVE_COOLING': med_active}
+                                'MED_ACTIVE_COOLING': med_active}
 
         self.__breach_alerts = {'NORMAL': normal, 'TOO_LOW': too_low, 'TOO_HIGH': too_high}
 
         self.__alert_target_funcs = {'TO_CONTROLLER': self.send_to_controller,
-                                   'TO_EMAIL': self.send_to_email}
+                                     'TO_EMAIL': self.send_to_email}
 
         self.__controller_interface = controller_status_stub
         self.__mail_server_interface = mail_server_status_stub

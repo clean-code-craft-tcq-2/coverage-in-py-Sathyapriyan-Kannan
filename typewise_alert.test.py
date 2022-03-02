@@ -111,6 +111,19 @@ class TypewiseTest(unittest.TestCase):
         self.assertTrue(alert.send_alert_to_controller(ta.controller_status_stub, 0, too_low))
         self.assertFalse(alert.send_alert_to_controller(ta.controller_status_stub, -6, too_low))
 
+    def test_alert_message_and_email(self):
+        self.assertEqual(too_low.message, 'Hi there, The temperature is too low :-|, Immediate action is needed!')
+        self.assertEqual(too_high.message, 'Hi there, The temperature is too high :-|, Immediate action is needed!')
+        self.assertEqual(normal.message, 'Hi there, The temperature is currently in Normal State :-)')
+
+        alert = TypewiseAlert()
+        self.assertEqual(alert.get_alert_object('TOO_LOW').message,
+                         'Hi there, The temperature is too low :-|, Immediate action is needed!')
+        self.assertEqual(alert.get_alert_object('TOO_HIGH').message,
+                         'Hi there, The temperature is too high :-|, Immediate action is needed!')
+        self.assertEqual(alert.get_alert_object('NORMAL').message,
+                         'Hi there, The temperature is currently in Normal State :-)')
+
 
 if __name__ == '__main__':
     unittest.main()
